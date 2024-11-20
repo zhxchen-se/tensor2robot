@@ -28,10 +28,12 @@ from tensor2robot.proto import t2r_pb2
 import tensorflow.compat.v1 as tf
 
 from google.protobuf import text_format
-from tensorflow.contrib import framework as contrib_framework
+# from tensorflow.contrib import framework as tf
 
-nest = contrib_framework.nest
-TSPEC = contrib_framework.TensorSpec
+from tensorflow.python.util import nest
+from tensorflow import TensorSpec as TSPEC
+#nest = contrib_framework.nest
+#TSPEC = contrib_framework.TensorSpec
 
 EXTRA_ASSETS_DIRECTORY = 'assets.extra'
 T2R_ASSETS_FILENAME = 't2r_assets.pbtxt'
@@ -1445,7 +1447,7 @@ def is_flat_spec_or_tensors_structure(spec_or_tensors):
                                                      collections.OrderedDict):
     # We have to check any element of our dict or OrderedDict.
     for value in spec_or_tensors.values():
-      if isinstance(value, contrib_framework.TensorSpec):
+      if isinstance(value, tf.TensorSpec):
         continue
       if isinstance(value, tf.Tensor):
         continue
@@ -1496,7 +1498,7 @@ def assert_valid_spec_structure(
 
   if isinstance(spec_structure, list) or isinstance(spec_structure, tuple):
     for value in spec_structure:
-      if isinstance(value, contrib_framework.TensorSpec):
+      if isinstance(value, tf.TensorSpec):
         # We only add non None TensorSpec names. These names have to be unique
         # within all specified TensorSpec names used so far in this
         # spec_structure.
